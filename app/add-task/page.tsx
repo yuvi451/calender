@@ -29,7 +29,7 @@ export default function AddTask() {
     async function addTask(){
         for(let i = 0; i < 12; i++){
             const date = new Date()
-            date.setMonth(date.getMonth() + i * Number(freq.current.value))
+            date.setMonth(date.getMonth() + i * Number(freq.current ? freq.current.value: 0))
             await addDoc(tasksCollection, {
                 userId: user,
                 //@ts-ignore
