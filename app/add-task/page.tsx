@@ -28,7 +28,7 @@ export default function AddTask() {
 
     async function addTask(){
         for(let i = 0; i < 12; i++){
-            const date = new Date()
+            const date = new Date(startdate.current.value)
             date.setMonth(date.getMonth() + i * Number(freq.current ? freq.current.value: 0))
             await addDoc(tasksCollection, {
                 userId: user,
@@ -52,6 +52,9 @@ export default function AddTask() {
         </div>
         <div>
             Frequency: <input ref={freq}></input>
+        </div>
+        <div>
+            Start-Date: <input type="date" ref={startdate}></input>
         </div>
         <button onClick={addTask}>Add Task</button>
     </div>
