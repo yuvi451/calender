@@ -29,10 +29,14 @@ export default function SignUp(){
 
     }
 
-    return <div style={{width: 500}} className="div1">
-        <input placeholder="Name" ref={username}></input>
-        <input placeholder="Email..." ref={email}></input>
-        <input placeholder="Password..." ref={password} type="password"></input>
-        <button onClick={signupUser}>SignUp</button>
-    </div>
+    return (
+        <div className="auth-card">
+            <h2>Create Account</h2>
+            <p>Sign up to track your monthly tasks.</p>
+            <input placeholder="Name" ref={username} />
+            <input placeholder="Email" ref={email} type="email" />
+            <input placeholder="Password" ref={password} type="password" />
+            <button className="btn-primary" onClick={signupUser}>Sign Up</button>
+        </div>
+    )
 }

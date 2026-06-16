@@ -43,19 +43,29 @@ export default function AddTask() {
         router.push("/")
     }
 
-    return <div className="div1">
-        <div className="div2">
-            Title: <input ref={title}></input>
+    return (
+        <div className="form-card">
+            <h2>Add New Task</h2>
+            <div className="form-group">
+                <label>Title</label>
+                <input placeholder="Task title..." ref={title} />
+            </div>
+            <div className="form-group">
+                <label>Description</label>
+                <input placeholder="Short description..." ref={description} />
+            </div>
+            <div className="form-group">
+                <label>Frequency (months)</label>
+                <input placeholder="e.g. 1 for monthly, 3 for quarterly..." ref={freq} type="number" />
+            </div>
+            <div className="form-group">
+                <label>Start Date</label>
+                <input type="date" ref={startdate} />
+            </div>
+            <div className="btn-row">
+                <button className="btn-primary" onClick={addTask}>Add Task</button>
+                <button className="btn-secondary" onClick={() => router.push("/")}>Cancel</button>
+            </div>
         </div>
-        <div className="div2">
-            Description: <input ref={description}></input>
-        </div>
-        <div className="div2">
-            Frequency: <input ref={freq}></input>
-        </div>
-        <div className="div2">
-            Start-Date: <input type="date" ref={startdate}></input>
-        </div>
-        <button onClick={addTask}>Add Task</button>
-    </div>
+    )
 }

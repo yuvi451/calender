@@ -1,7 +1,7 @@
 "use client"
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { auth, googleProvider, usersCollection } from "../../config/firebase-config";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
+import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult } from "firebase/auth"
 import { useRouter } from "next/navigation";
 import { addDoc } from "firebase/firestore";
 
@@ -10,10 +10,25 @@ export default function Auth() {
     const pass = useRef(null)
     const router = useRouter()
 
+    useEffect(() => {
+        getRedirectResult(auth).then(async (result) => {
+            if (result) {
+                const user = result.user
+                await addDoc(usersCollection, {
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName,
+                    createdAt: new Date().toLocaleDateString()
+                })
+                router.push("/")
+            }
+        }).catch(console.error)
+    }, [])
+
     async function signIn(){
         try{
             //@ts-ignore
-            const signin = await signInWithEmailAndPassword(auth, email.current.value, pass.current.value)
+            await signInWithEmailAndPassword(auth, email.current.value, pass.current.value)
             router.push("/")
         } catch (err) {
             alert(err)
@@ -22,29 +37,21 @@ export default function Auth() {
 
     async function signInwithGoogle() {
         try{
-            const res = await signInWithPopup(auth, googleProvider)
-            const user = res.user
-
-            await addDoc(usersCollection, {
-                uid: user.uid,
-                //@ts-ignore
-                email: user.email, name: user.displayName,
-                createdAt: new Date().toLocaleDateString()
-            })
-            router.push("/")
+            await signInWithRedirect(auth, googleProvider)
         } catch (err){
             console.error(err)
         }
     }
 
-    return <div style={{width: 500}} className="div1">
-        <input placeholder="Email..." ref={email}></input>
-        <input placeholder="Password..." ref={pass} type="password"></input>
-        <button onClick={signIn}>SignIn</button>
-        <button onClick={signInwithGoogle}>SignIn with Google</button>
-        <button onClick={() => router.push("/signup")}>SignUp</button>
-    </div>
-
+    return (
+        <div className="auth-card">
+            <h2>Sign In</h2>
+            <p>Welcome back! Enter your details below.</p>
+            <input placeholder="Email" ref={email} type="email" />
+            <input placeholder="Password" ref={pass} type="password" />
+            <button className="btn-primary" onClick={signIn}>Sign In</button>
+            <button className="btn-google" onClick={signInwithGoogle}>Sign In with Google</button>
+            <button className="btn-secondary" onClick={() => router.push("/signup")}>Create an Account</button>
+        </div>
+    )
 }
-
-
