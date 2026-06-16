@@ -11,7 +11,6 @@ body {
   min-height: 100vh;
 }
 
-/* auth pages */
 .auth-card {
   background: white;
   border-radius: 10px;
@@ -62,7 +61,6 @@ body {
   color: #111;
 }
 
-/* add task form */
 .form-card {
   background: white;
   border-radius: 10px;
@@ -94,7 +92,6 @@ body {
   color: #444;
 }
 
-/* inputs */
 input {
   padding: 10px 12px;
   border: 1px solid #d1d5db;
@@ -110,7 +107,6 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* buttons */
 button {
   padding: 10px 18px;
   border: none;
@@ -168,12 +164,10 @@ button {
   margin-top: 16px;
 }
 
-/* calendar wrapper - no overflow:hidden so toolbar clicks aren't clipped */
 .calendar-wrapper {
   border-radius: 8px;
 }
 
-/* undo the global button styles for calendar toolbar */
 .rbc-toolbar button {
   padding: 5px 10px;
   background: #fff;
@@ -201,7 +195,6 @@ button {
   font-size: 15px;
 }
 
-/* events - readable chips */
 .rbc-event {
   background-color: #2563eb !important;
   border: none !important;
@@ -229,12 +222,10 @@ button {
   font-weight: 600;
 }
 
-/* today cell highlight */
 .rbc-today {
   background-color: #eff6ff;
 }
 
-/* agenda view (used on mobile) */
 .rbc-agenda-view table {
   width: 100%;
 }
@@ -259,7 +250,6 @@ button {
   text-align: center;
 }
 
-/* loading */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -269,7 +259,6 @@ button {
   font-size: 15px;
 }
 
-/* tablet */
 @media (max-width: 960px) {
   .main-card {
     margin: 16px;
@@ -284,7 +273,6 @@ button {
   }
 }
 
-/* mobile */
 @media (max-width: 600px) {
   .main-card {
     margin: 0;
@@ -310,7 +298,6 @@ button {
     padding: 28px 16px;
   }
 
-  /* prevents iOS from zooming in on focus */
   input {
     font-size: 16px;
   }

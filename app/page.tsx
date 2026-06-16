@@ -11,8 +11,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment)
 
-// Fully controlled calendar — bypasses the broken uncontrollable wrapper
-// that uses deprecated React lifecycle methods incompatible with React 19
+
 function MyCalendar({ myEventsList, isMobile }: { myEventsList: any[], isMobile: boolean }) {
   const [date, setDate] = useState(new Date())
   const [view, setView] = useState<View>(isMobile ? 'agenda' : 'month')
