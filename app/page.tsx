@@ -62,7 +62,7 @@ export default function Home() {
     }
 
 
-  return<div>
+  return<div className="div1">
     <MyCalendar myEventsList={eventList}></MyCalendar>
 
     <button onClick={() => router.push("/add-task")}>Add Tasks</button>

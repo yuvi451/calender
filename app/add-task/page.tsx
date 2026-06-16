@@ -43,17 +43,17 @@ export default function AddTask() {
         router.push("/")
     }
 
-    return <div>
-        <div>
+    return <div className="div1">
+        <div className="div2">
             Title: <input ref={title}></input>
         </div>
-        <div>
+        <div className="div2">
             Description: <input ref={description}></input>
         </div>
-        <div>
+        <div className="div2">
             Frequency: <input ref={freq}></input>
         </div>
-        <div>
+        <div className="div2">
             Start-Date: <input type="date" ref={startdate}></input>
         </div>
         <button onClick={addTask}>Add Task</button>

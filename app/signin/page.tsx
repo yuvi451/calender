@@ -37,7 +37,7 @@ export default function Auth() {
         }
     }
 
-    return <div>
+    return <div style={{width: 500}} className="div1">
         <input placeholder="Email..." ref={email}></input>
         <input placeholder="Password..." ref={pass} type="password"></input>
         <button onClick={signIn}>SignIn</button>

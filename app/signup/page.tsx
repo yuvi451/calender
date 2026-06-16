@@ -29,7 +29,7 @@ export default function SignUp(){
 
     }
 
-    return <div>
+    return <div style={{width: 500}} className="div1">
         <input placeholder="Name" ref={username}></input>
         <input placeholder="Email..." ref={email}></input>
         <input placeholder="Password..." ref={password} type="password"></input>
