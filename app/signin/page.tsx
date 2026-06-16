@@ -1,9 +1,9 @@
 "use client"
 import { useRef, useEffect } from "react";
-import { auth, googleProvider, usersCollection } from "../../config/firebase-config";
-import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "firebase/auth"
+import { auth, googleProvider, db } from "../../config/firebase-config";
+import { signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged } from "firebase/auth"
 import { useRouter } from "next/navigation";
-import { addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function Auth() {
     const email = useRef(null)
@@ -11,30 +11,14 @@ export default function Auth() {
     const router = useRouter()
 
     useEffect(() => {
-        // Redirect to home if already signed in (catches redirect result too)
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) router.push("/")
         })
-
-        // Save Google user profile after redirect, then let onAuthStateChanged handle nav
-        getRedirectResult(auth).then(async (result) => {
-            if (result) {
-                try {
-                    await addDoc(usersCollection, {
-                        uid: result.user.uid,
-                        email: result.user.email,
-                        name: result.user.displayName,
-                        createdAt: new Date().toLocaleDateString()
-                    })
-                } catch (_) {}
-            }
-        }).catch((err) => alert("Google sign-in error: " + err.message))
-
         return () => unsubscribe()
     }, [])
 
-    async function signIn(){
-        try{
+    async function signIn() {
+        try {
             //@ts-ignore
             await signInWithEmailAndPassword(auth, email.current.value, pass.current.value)
         } catch (err) {
@@ -43,10 +27,18 @@ export default function Auth() {
     }
 
     async function signInwithGoogle() {
-        try{
-            await signInWithRedirect(auth, googleProvider)
-        } catch (err){
-            console.error(err)
+        try {
+            const result = await signInWithPopup(auth, googleProvider)
+            const user = result.user
+            // setDoc with merge: creates the user doc if new, skips if already exists
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName,
+                createdAt: new Date().toLocaleDateString()
+            }, { merge: true })
+        } catch (err: any) {
+            alert("Google sign-in failed: " + err.message)
         }
     }
 
