@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useEffect } from "react";
 import { auth, googleProvider, usersCollection } from "../../config/firebase-config";
-import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult } from "firebase/auth"
+import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "firebase/auth"
 import { useRouter } from "next/navigation";
 import { addDoc } from "firebase/firestore";
 
@@ -11,25 +11,32 @@ export default function Auth() {
     const router = useRouter()
 
     useEffect(() => {
+        // Redirect to home if already signed in (catches redirect result too)
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) router.push("/")
+        })
+
+        // Save Google user profile after redirect, then let onAuthStateChanged handle nav
         getRedirectResult(auth).then(async (result) => {
             if (result) {
-                const user = result.user
-                await addDoc(usersCollection, {
-                    uid: user.uid,
-                    email: user.email,
-                    name: user.displayName,
-                    createdAt: new Date().toLocaleDateString()
-                })
-                router.push("/")
+                try {
+                    await addDoc(usersCollection, {
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        name: result.user.displayName,
+                        createdAt: new Date().toLocaleDateString()
+                    })
+                } catch (_) {}
             }
-        }).catch(console.error)
+        }).catch((err) => alert("Google sign-in error: " + err.message))
+
+        return () => unsubscribe()
     }, [])
 
     async function signIn(){
         try{
             //@ts-ignore
             await signInWithEmailAndPassword(auth, email.current.value, pass.current.value)
-            router.push("/")
         } catch (err) {
             alert(err)
         }
